@@ -22,3 +22,4 @@ const validate400 = (validatedItemBody, res) => {
 
 exports.Genre = Genre;
 exports.validate400 = validate400;
+exports.genreSchema = genreSchema;

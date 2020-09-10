@@ -1,5 +1,4 @@
 const express = require("express");
-const mongoose = require("mongoose");
 
 const { Customer, validate400 } = require("../models/customer");
 

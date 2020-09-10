@@ -10,6 +10,7 @@ const mongoose = require("mongoose");
 const home = require("./routes/home");
 const genres = require("./routes/genres");
 const customers = require("./routes/customers");
+const movies = require("./routes/movies");
 
 mongoose
   .connect("mongodb://localhost/vidly", {
@@ -29,6 +30,7 @@ app.use(helmet());
 app.use("/", home);
 app.use("/genres", genres);
 app.use("/customers", customers);
+app.use("/movies", movies);
 
 // console.log(`Application Name: ${config.get("name")}`);
 // console.log(`Mail Server: ${config.get("mail.host")}`);

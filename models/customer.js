@@ -10,7 +10,7 @@ const customerSchema = new mongoose.Schema({
   },
 
   phone: {
-    type: Number,
+    type: String,
     required: true,
     minlength: 5,
     maxlength: 13,
@@ -26,8 +26,8 @@ const Customer = mongoose.model("Customer", customerSchema);
 const validate400 = (validatedItemBody, res) => {
   const schema = Joi.object({
     name: Joi.string().required().min(3).max(50),
-    phone: Joi.Number().required().min(5).max(13),
-    isGold: Joi.Boolean(),
+    phone: Joi.string().required().min(5).max(13),
+    isGold: Joi.boolean(),
   });
   const { error } = schema.validate(validatedItemBody);
   if (error) return res.status(400).send(error.details[0].message);

@@ -12,19 +12,12 @@ const genres = require("./routes/genres");
 const customers = require("./routes/customers");
 
 mongoose
-  .connect("mongodb://localhost/genres", {
+  .connect("mongodb://localhost/vidly", {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
-  .then(() => console.log("Connected to MongoDB/genres..."))
-  .catch((err) => console.error("Could not connect to genres ", err));
-mongoose
-  .connect("mongodb://localhost/customers", {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
-  .then(() => console.log("Connected to MongoDB/customers..."))
-  .catch((err) => console.error("Could not connect to customers", err));
+  .then(() => console.log("Connected to MongoDB..."))
+  .catch((err) => console.error("Could not connect ", err));
 
 app.set("view engine", "pug");
 app.set("views", "./views");

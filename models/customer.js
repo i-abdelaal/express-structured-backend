@@ -35,3 +35,4 @@ const validate400 = (validatedItemBody, res) => {
 
 exports.Customer = Customer;
 exports.validate400 = validate400;
+exports.customerSchema = customerSchema;

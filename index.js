@@ -13,6 +13,7 @@ const customers = require("./routes/customers");
 const movies = require("./routes/movies");
 const rentals = require("./routes/rentals");
 const users = require("./routes/users");
+const auth = require("./routes/auth");
 
 mongoose
   .connect("mongodb://localhost/vidly", {
@@ -35,6 +36,7 @@ app.use("/customers", customers);
 app.use("/movies", movies);
 app.use("/rentals", rentals);
 app.use("/users", users);
+app.use("/auth", auth);
 
 // console.log(`Application Name: ${config.get("name")}`);
 // console.log(`Mail Server: ${config.get("mail.host")}`);

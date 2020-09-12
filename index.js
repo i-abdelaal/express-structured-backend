@@ -7,6 +7,11 @@ const startupDebugger = require("debug")("app:startup");
 const dbDebugger = require("debug")("app:db");
 const mongoose = require("mongoose");
 
+if (!config.get("jwtPrivateKey")) {
+  console.error("FATAL ERROR: jwtPrivateKey is not defined!");
+  process.exit(1);
+}
+
 const home = require("./routes/home");
 const genres = require("./routes/genres");
 const customers = require("./routes/customers");
@@ -37,10 +42,6 @@ app.use("/movies", movies);
 app.use("/rentals", rentals);
 app.use("/users", users);
 app.use("/auth", auth);
-
-// console.log(`Application Name: ${config.get("name")}`);
-// console.log(`Mail Server: ${config.get("mail.host")}`);
-// console.log("Mail Password: " + config.get("mail.password"));
 
 if (app.get("env") === "development") {
   app.use(morgan("tiny"));

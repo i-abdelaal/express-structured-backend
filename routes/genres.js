@@ -1,6 +1,7 @@
 const express = require("express");
 
 const { Genre, validate400 } = require("../models/genre");
+const auth = require("../middleware/auth");
 
 const router = express.Router();
 
@@ -15,7 +16,7 @@ router.get("/:id", (req, res) => {
   res.send(genre);
 });
 
-router.post("/", async (req, res) => {
+router.post("/", auth, async (req, res) => {
   validate400(req.body, res);
   let genre = new Genre({
     name: req.body.name,

@@ -1,6 +1,7 @@
 const express = require("express");
 
 const { Customer, validate400 } = require("../models/customer");
+const auth = require("../middleware/auth");
 
 const router = express.Router();
 
@@ -9,7 +10,7 @@ router.get("/", async (req, res) => {
   res.send(customers);
 });
 
-router.post("/", async (req, res) => {
+router.post("/", auth, async (req, res) => {
   validate400(req.body, res);
   let customer = new Customer({
     name: req.body.name,

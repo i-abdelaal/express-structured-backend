@@ -43,10 +43,10 @@ app.use("/rentals", rentals);
 app.use("/users", users);
 app.use("/auth", auth);
 
-if (app.get("env") === "development") {
-  app.use(morgan("tiny"));
-  startupDebugger("Morgan enabled...");
-}
+// if (app.get("env") === "development") {
+//   app.use(morgan("tiny"));
+//   startupDebugger("Morgan enabled...");
+// }
 
 const port = process.env.PORT || 3000;
 

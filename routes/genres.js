@@ -3,7 +3,7 @@ const express = require("express");
 const { Genre, validate400 } = require("../models/genre");
 const auth = require("../middleware/auth");
 const admin = require("../middleware/admin");
-const winston = require("winston");
+const validateObjectId = require("../middleware/validateObjectId");
 
 const router = express.Router();
 
@@ -12,8 +12,8 @@ router.get("/", async (req, res) => {
   res.send(genres);
 });
 
-router.get("/:id", (req, res) => {
-  const genre = Genre.findById(req.params.id);
+router.get("/:id", validateObjectId, async (req, res) => {
+  const genre = await Genre.findById(req.params.id);
   if (!genre) return res.status(404).send(`${req.body.name} is not found`);
   res.send(genre);
 });

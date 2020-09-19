@@ -23,16 +23,15 @@ const customerSchema = new mongoose.Schema({
 
 const Customer = mongoose.model("Customer", customerSchema);
 
-const validate400 = (validatedItemBody, res) => {
+const validateCustomer = (validatedItemBody, res) => {
   const schema = Joi.object({
     name: Joi.string().required().min(3).max(50),
     phone: Joi.string().required().min(5).max(13),
     isGold: Joi.boolean(),
   });
-  const { error } = schema.validate(validatedItemBody);
-  if (error) return res.status(400).send(error.details[0].message);
+  return schema.validate(validatedItemBody);
 };
 
 exports.Customer = Customer;
-exports.validate400 = validate400;
+exports.validateCustomer = validateCustomer;
 exports.customerSchema = customerSchema;

@@ -31,15 +31,14 @@ const movieSchema = new mongoose.Schema({
 
 const Movie = mongoose.model("Movie", movieSchema);
 
-const validateMovie = (movie, res) => {
+const validateMovie = (movie) => {
   const schema = Joi.object({
     title: Joi.string().required().min(0).max(50),
     genreId: Joi.objectId().required(),
     numberInStock: Joi.number().required().min(0),
     dailyRentalRate: Joi.number().required().min(0),
   });
-  const { error } = schema.validate(movie);
-  if (error) return res.status(400).send(error.details[0].message);
+  return schema.validate(movie);
 };
 
 exports.Movie = Movie;

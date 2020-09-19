@@ -2,9 +2,9 @@ const request = require("supertest");
 const mongoose = require("mongoose");
 const { Genre } = require("../../../models/genre");
 const { User } = require("../../../models/user");
-let server;
 
 describe("/genres", () => {
+  let server;
   beforeEach(() => {
     server = require("../../../index");
   });
@@ -14,14 +14,6 @@ describe("/genres", () => {
   });
 
   describe("GET /", () => {
-    beforeEach(() => {
-      server = require("../../../index");
-    });
-    afterEach(async () => {
-      await server.close();
-      await Genre.deleteMany({});
-    });
-
     it("should return all genres", async () => {
       await Genre.collection.insertMany([
         { name: "genre1" },
@@ -37,14 +29,6 @@ describe("/genres", () => {
   });
 
   describe("GET /:id", () => {
-    beforeEach(() => {
-      server = require("../../../index");
-    });
-    afterEach(async () => {
-      await server.close();
-      await Genre.deleteMany({});
-    });
-
     it("should return 404 if an invalid id is passed", async () => {
       const res = await request(server).get("/genres/1");
 
@@ -69,19 +53,11 @@ describe("/genres", () => {
   });
 
   describe("POST /", () => {
-    beforeEach(() => {
-      server = require("../../../index");
-    });
-    afterEach(async () => {
-      await server.close();
-      await Genre.deleteMany({});
-    });
-
     let token;
     let name;
 
-    const exec = async () => {
-      return await request(server)
+    const exec = () => {
+      return request(server)
         .post("/genres/")
         .set("x-auth-token", token)
         .send({ name });
@@ -135,26 +111,20 @@ describe("/genres", () => {
   describe("PUT /:id", () => {
     let token, genre, id, newName;
 
-    const exec = async () => {
-      return await request(server)
+    const exec = () => {
+      return request(server)
         .put(`/genres/${id}`)
         .set("x-auth-token", token)
         .send({ name: newName });
     };
 
     beforeEach(async () => {
-      server = require("../../../index");
       token = new User().generateAuthToken();
       genre = new Genre({ name: "genre1" });
       await genre.save();
 
-      id = genre._id.toHexString();
+      id = genre._id;
       newName = "updatedName";
-    });
-
-    afterEach(async () => {
-      await server.close();
-      await Genre.deleteMany({});
     });
 
     it("should return 401 if client is not logged in", async () => {
@@ -163,6 +133,13 @@ describe("/genres", () => {
       const res = await exec();
 
       expect(res.status).toBe(401);
+    });
+
+    it("should return 404 if an invalid id is passed", async () => {
+      id = "1";
+      const res = await exec();
+
+      expect(res.status).toBe(404);
     });
 
     it("should return 400 if genre is less than 5 characters", async () => {
@@ -180,16 +157,9 @@ describe("/genres", () => {
 
       expect(res.status).toBe(400);
     });
-    it("should return 404 if an invalid id is passed", async () => {
-      id = 1;
-
-      const res = await exec();
-
-      expect(res.status).toBe(404);
-    });
 
     it("should return 404 if no genre with the given id exist", async () => {
-      id = mongoose.Types.ObjectId().toHexString();
+      id = mongoose.Types.ObjectId();
 
       const res = await exec();
 
@@ -215,24 +185,18 @@ describe("/genres", () => {
   describe("DELETE /:id", () => {
     let token, genre, id;
 
-    const exec = async () => {
-      return await request(server)
+    const exec = () => {
+      return request(server)
         .delete(`/genres/${id}`)
         .set("x-auth-token", token)
         .send();
     };
 
     beforeEach(async () => {
-      server = require("../../../index");
       token = new User({ isAdmin: true }).generateAuthToken();
       genre = new Genre({ name: "genre1" });
       await genre.save();
-      id = genre._id.toHexString();
-    });
-
-    afterEach(async () => {
-      await server.close();
-      await Genre.deleteMany({});
+      id = genre._id;
     });
 
     it("should return 401 if client is not logged in", async () => {
@@ -260,7 +224,7 @@ describe("/genres", () => {
     });
 
     it("should return 404 if no genre with the given id was found", async () => {
-      id = mongoose.Types.ObjectId().toHexString();
+      id = mongoose.Types.ObjectId();
 
       const res = await exec();
 
@@ -278,7 +242,7 @@ describe("/genres", () => {
     it("should return the removed genre", async () => {
       const res = await exec();
 
-      expect(res.body).toHaveProperty("_id", genre._id);
+      expect(res.body).toHaveProperty("_id", genre._id.toHexString());
       expect(res.body).toHaveProperty("name", genre.name);
     });
   });

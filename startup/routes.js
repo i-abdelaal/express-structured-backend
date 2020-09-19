@@ -6,6 +6,7 @@ const genres = require("../routes/genres");
 const customers = require("../routes/customers");
 const movies = require("../routes/movies");
 const rentals = require("../routes/rentals");
+const returns = require("../routes/returns");
 const users = require("../routes/users");
 const auth = require("../routes/auth");
 const error = require("../middleware/error");
@@ -23,6 +24,7 @@ module.exports = function (app) {
   app.use("/customers", customers);
   app.use("/movies", movies);
   app.use("/rentals", rentals);
+  app.use("/returns", returns);
   app.use("/users", users);
   app.use("/auth", auth);
   app.use(error);

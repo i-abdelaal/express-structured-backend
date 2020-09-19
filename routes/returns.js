@@ -1,5 +1,4 @@
 const express = require("express");
-const moment = require("moment");
 const Joi = require("joi");
 const router = express.Router();
 
@@ -21,9 +20,7 @@ router.post("/", [auth, validate(validateReturn)], async (req, res) => {
   if (!rental) return res.status(404).send("rental not found!");
   if (rental.dateReturned)
     return res.status(400).send("return already processed!");
-  rental.dateReturned = new Date();
-  const renatlDays = moment().diff(rental.dateOut, "days");
-  rental.rentalFee = renatlDays * rental.movie.dailyRentalRate;
+  rental.return();
   await rental.save();
   await Movie.update(
     { _id: rental.movie._id },
@@ -31,6 +28,6 @@ router.post("/", [auth, validate(validateReturn)], async (req, res) => {
       $inc: { numberInStock: 1 },
     }
   );
-  return res.status(200).send(rental);
+  return res.send(rental);
 });
 module.exports = router;

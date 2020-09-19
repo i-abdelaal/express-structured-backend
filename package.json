@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "jest --watchAll --verbose --runInBand --detectOpenHandles",
-    "start": "serve -s build"
+    "start": "node index.js"
   },
   "jest": {
     "testEnvironment": "node"
